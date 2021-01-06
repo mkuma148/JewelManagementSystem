@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Add Item for {{data.productObject.productName}}</h2>
+<mat-dialog-content class="mat-typography">
+    <form fxLayoutAlign="Stretch" fxLayout="column" class="login-form" #productFields="ngForm" autocomplete="off" novalidate>
+    <table>
+    <tr><td><mat-form-field>
+        <mat-label>Item Name</mat-label>
+        <input matInput type="text" [(ngModel)]="item.itemName"   minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="itemName" placeholder="Enter Item Name">
+        <!-- <mat-error *ngIf="description.hasError('required')">Desciption is required</mat-error>
+        <mat-error *ngIf="description.hasError('minlength')">Desciption must be minimum of 3 characters.</mat-error>
+        <mat-error *ngIf="description.hasError('pattern')">Desciption must only be alphabets.</mat-error> -->
+       </mat-form-field></td></tr>
+    <tr><td><mat-form-field>
+        <mat-label>Item Description</mat-label>
+        <input matInput type="text" [(ngModel)]="item.description"  minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="description" placeholder="Enter Desciption">
+        <!-- <mat-error *ngIf="description.hasError('required')">Desciption is required</mat-error>
+        <mat-error *ngIf="description.hasError('minlength')">Desciption must be minimum of 3 characters.</mat-error>
+        <mat-error *ngIf="description.hasError('pattern')">Desciption must only be alphabets.</mat-error> -->
+       </mat-form-field></td></tr>
+    <tr><td><mat-form-field>
+        <mat-label>Quantity</mat-label>
+        <input matInput type="text" [(ngModel)]="item.quantity"  minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="quantity" placeholder="Enter Quantity">
+        <!-- <mat-error *ngIf="description.hasError('required')">Desciption is required</mat-error>
+        <mat-error *ngIf="description.hasError('minlength')">Desciption must be minimum of 3 characters.</mat-error>
+        <mat-error *ngIf="description.hasError('pattern')">Desciption must only be alphabets.</mat-error> -->
+       </mat-form-field></td></tr>
+    <tr><td><mat-form-field>
+        <mat-label>Rate</mat-label>
+        <input matInput type="text" [(ngModel)]="item.rate" minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="rate" placeholder="Enter Rate">
+        <!-- <mat-error *ngIf="description.hasError('required')">Desciption is required</mat-error>
+        <mat-error *ngIf="description.hasError('minlength')">Desciption must be minimum of 3 characters.</mat-error>
+        <mat-error *ngIf="description.hasError('pattern')">Desciption must only be alphabets.</mat-error> -->
+       </mat-form-field></td></tr>
+</table>
+</form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button  (click)="confirm()" cdkFocusInitial color="warn">Add Item</button>
+    <button mat-raised-button mat-dialog-close (click)="cancel()" color="primary">Cancel</button>
+  </mat-dialog-actions>

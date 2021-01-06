@@ -1,0 +1,495 @@
+<html>
+
+<head>
+</head>
+
+<body>
+  <div *ngIf="pageLoad; else loaded" class="wrapper">
+    <div class="inner">
+      <mat-spinner color="warn" [diameter]="100"></mat-spinner>
+    </div>
+  </div>
+  <ng-template #loaded>
+    <div class="main-div">
+      <mat-card fcFlex="25" class="main-mat-card">
+        <mat-toolbar color="warn">
+          <mat-toolbar-row>Sell Product
+            <span class="flexExpand"></span>
+            <div align="right" *ngIf="disableShoppingCart">
+              <a href="javascript:void(0);">
+                <mat-icon [matBadge]="items.length" [matMenuTriggerFor]="menu" [matBadgeHidden]="hidden">shopping_cart
+                </mat-icon>
+              </a>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+
+        <form fxLayoutAlign="Stretch" fxLayout="column" class="login-form">
+
+          <mat-horizontal-stepper linear #stepper (selectionChange)="selectionChange($event)">
+
+            <mat-step [stepControl]="firstFormGroup">
+              <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>
+                  <p>Fill out the item</p>
+                </ng-template>
+
+                <mat-menu #menu="matMenu">
+                  <div class="Table">
+                    <div class="Title">
+                      <p>Review Your Cart</p>
+                    </div>
+                    <div class="Heading">
+                      <div class="Cell">
+                        <p>Item name</p>
+                      </div>
+                      <div class="Cell">
+                        <p>Quantity</p>
+                      </div>
+                      <div class="Cell">
+                        <p>Rate</p>
+                      </div>
+                      <div class="Cell">
+                        <p>Sum Of Rate</p>
+                      </div>
+                      <div class="Cell">
+                        <p>Delete</p>
+                      </div>
+                    </div>
+                    <div *ngFor="let item of items" (click)="$event.stopPropagation()" class="Row">
+
+
+                      <div class="Cell">
+                        <p>{{item.itemName}}</p>
+                      </div>
+                      <div class="Cell">
+                        <p><input type="number" id="inputSpin" [value]="item.piece" min="1" [max]="item.quantity"
+                            step="1" (change)="reviewCartCall(item,$event.target.value)" /> </p>
+                      </div>
+                      <div class="Cell">
+                        <p>{{item.rate}}</p>
+                      </div>
+                      <div class="Cell">
+                        <p>{{item.sumOfRate}}</p>
+                      </div>
+                      <div class="Cell">
+                        <mat-icon (click)="deleteItemFromCart(item)" (click)="$event.stopPropagation()">delete
+                        </mat-icon>
+                      </div>
+                      <!-- <tr> <td>{{item.itemName}}</td>
+                    <td>{{item.quantity}}</td>
+                     <td>{{item.rate}}</td>
+                     <td>{{item.sumOfRate}}</td>
+                    <td> <a href="javascript:void(0)"><mat-icon (click)="click()">add</mat-icon></a></td>
+                   </tr> -->
+                    </div>
+                  </div>
+                  <div align="right">
+                    <button mat-raised-button matStepperNext color="primary">Check Out</button>
+                  </div>
+                </mat-menu>
+
+                <mat-card class="sub-Card">
+                  <div style="display: flex;">
+                    <div style="flex-grow: 1;">
+                      <table>
+                        <tr>
+                          <h4>Product</h4>
+                        </tr>
+                        <tr>
+
+                          <td>
+                            <mat-form-field class="example-full-width">
+                              <input type="text" placeholder="Pick Product" aria-label="Number" matInput
+                                [formControl]="myControl" [matAutocomplete]="auto">
+                              
+                              <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)='selectedProduct($event.option.id)'>
+
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.productName"
+                                  [id]="option">
+                                  {{option.productName}}
+                                </mat-option>
+
+                              </mat-autocomplete>
+                            
+                            </mat-form-field>
+
+
+                            <!-- <mat-form-field>
+                   <mat-label>Product Name</mat-label>
+                   <input matInput type="text" formControlName="productName" [(ngModel)]="registerUserData.userFirstName" minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="userFirstName" placeholder="Enter First Name">
+                   <mat-error *ngIf="productName.hasError('required')">First Name is required</mat-error>
+                   <mat-error *ngIf="productName.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                   <mat-error *ngIf="productName.hasError('pattern')">First Name must be only alphabets.</mat-error>
+                  </mat-form-field> -->
+                          </td>
+                          <td>
+                            <mat-form-field>
+                              <mat-label>Description</mat-label>
+                              <input matInput type="text" [disabled]="true" [value]="description" name="decription"
+                                placeholder="Enter First Name">
+                              <!-- <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+                    <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                    <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error> -->
+                            </mat-form-field>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+
+                    <div class="main-div-banner">
+                      <mat-card fcFlex="25" class="main-mat-card-banner">
+                        <mat-card-header>
+                          <mat-card-subtitle>Item Count</mat-card-subtitle>
+                          <mat-card-title>{{itemCount}}</mat-card-title>
+                        </mat-card-header>
+                      </mat-card>
+                    </div>
+                  </div>
+                </mat-card> <br>
+                <mat-card class="sub-table-Card">
+                  <h4>Sub Product</h4>
+
+
+
+                  <mat-form-field>
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+                  </mat-form-field>
+
+                  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="table_class">
+                    <ng-container matColumnDef="{{column}}" *ngFor="let column of itemsColumnsToDisplay">
+                      <th mat-header-cell *matHeaderCellDef> {{column | humanize}} </th>
+                      <td mat-cell *matCellDef="let element">
+                        <div *ngIf="column==='piece';else noPiece">
+                          <div *ngIf="element['quantity'] === 0; else zeroPiece">
+                            <mat-icon>remove</mat-icon>
+                         </div>
+                         <ng-template #zeroPiece>
+                          <input type="number" formControlName="itemPiece" value="1" min="1" [max]="element['quantity']"
+                            step="1" (change)="setQuantity(element)"
+                            [class.example-expanded-row]="expandedElement === element"
+                            (click)="expandedElement = expandedElement === element ? null : element" />
+                          </ng-template>
+                          <!-- npm install bootstrap-input-spinner -->
+                        </div>
+                        <ng-template #noPiece>
+                          <ng-container *ngIf="column==='addToCart';else noPieceAndCart">
+                            <div *ngIf="element['quantity'] === 0; else noDisabled">
+                              <mat-icon>remove_shopping_cart</mat-icon>
+                           </div>
+                           <ng-template #noDisabled>
+                            <a href="javaScript:void(0)" (click)="addItem(element)" 
+                            [class.example-expanded-row]="expandedElement === element"
+                            (click)="expandedElement = expandedElement === element ? null : element">
+                            <mat-icon>shopping_cart</mat-icon>
+                             </a>
+                           </ng-template>
+                          </ng-container>
+                        </ng-template>
+                        <ng-template #noPieceAndCart>
+                          {{element[column]}}
+                        </ng-template>
+                      </td>
+                    </ng-container>
+
+                    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                    <ng-container matColumnDef="expandedDetail">
+                      <td mat-cell *matCellDef="let element" [attr.colspan]="itemsColumnsToDisplay.length">
+                        <div class="example-element-detail"
+                          [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                          <div class="example-element-diagram">
+                            <div class="card">
+                              <a href="javascript:void(0)" (click)="customerInfo(element)">
+                                <div *ngIf="element.symbol === ''; else profilePic" class="profile-userpic">
+                                  <img
+                                    src="https://firebasestorage.googleapis.com/v0/b/camp-9ee59.appspot.com/o/RoomsImages%2F1599720396523?alt=media&token=fb67ed10-ddbd-4c12-b75f-f8c1e67304a0"
+                                    class="profile-userpic" class="img-responsive" alt="">
+                                </div>
+                              </a>
+                              <ng-template #profilePic>
+                                <div class="profile-userpic">
+                                  <img
+                                    src="https://firebasestorage.googleapis.com/v0/b/camp-9ee59.appspot.com/o/RoomsImages%2F1599720396523?alt=media&token=fb67ed10-ddbd-4c12-b75f-f8c1e67304a0"
+                                    class="profile-userpic" class="img-responsive" alt="">
+                                </div>
+                              </ng-template>
+                            </div>
+                            <!-- <div class="example-element-position"> {{element.position}} </div>
+                      <div class="example-element-symbol"> {{element.symbol}} </div>
+                      <div class="example-element-name"> {{element.name}} </div>
+                      <div class="example-element-weight"> {{element.weight}} </div> -->
+                          </div>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <div class="example-element-description" id="section">
+                            <table border=1>
+                              <tr>
+                                <td>Total Amount </td>
+                                <td>{{element.position}} </td>
+                              </tr>
+                              <tr>
+                                <td>Paid Amount </td>
+                                <td>{{element.name}} </td>
+                              </tr>
+                              <tr>
+                                <td>Pending Amount </td>
+                                <td>{{element.weight}} </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="itemsColumnsToDisplay"></tr>
+                    <tr mat-row *matRowDef="let element; columns: itemsColumnsToDisplay;" class="example-element-row"
+                      [class.example-expanded-row]="expandedElement === element"
+                      (click)="expandedElement = expandedElement === element ? null : element">
+                    </tr>
+                    <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+                  </table>
+
+
+                </mat-card> <br>
+
+
+
+
+
+
+
+                <!-- <div>
+                  <button mat-raised-button matStepperNext color="primary">Next</button>
+                </div> -->
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup" optional="false">
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>
+                  <p>Fill out customer details</p>
+                </ng-template>
+                <table>
+                  <tr>
+                    <h4>Customer</h4>
+                  </tr>
+                  <tr>
+
+                    <td>
+                      <mat-form-field>
+                        <mat-label>Customer First Name</mat-label>
+                        <input matInput type="text" formControlName="customerFirstName" name="customerFirstName"
+                          placeholder="Enter First Name">
+                        <!-- <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+                   <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                   <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error> -->
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field>
+                        <mat-label>Customer Last Name</mat-label>
+                        <input matInput type="text" formControlName="customerLastName" name="customerLastName"
+                          placeholder="Enter Last Name">
+                        <!-- <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+                       <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                       <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error> -->
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput type="text" formControlName="email" name="email" placeholder="Enter Email">
+                        <!-- <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+                           <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                           <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error> -->
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field>
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput type="tel" formControlName="mobNumber" name="mobNumber"
+                          placeholder="Enter Mobile Number">
+                        <!-- <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+                               <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                               <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error> -->
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                </table>
+                <mat-divider></mat-divider><br>
+                <div formGroupName="address">
+                  <table>
+
+
+                    <tr>
+                      <h4>Address</h4>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>Address 1</mat-label>
+                          <input matInput type="text" formControlName="address1" name="customerAddress1"
+                            placeholder="Enter Address1">
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>Address 2</mat-label>
+                          <input matInput type="text" formControlName="address2" name="customerAddress2"
+                            placeholder="Enter Address2">
+
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>Street Name</mat-label>
+                          <input matInput type="text" formControlName="streetName" name="streetName"
+                            placeholder="Enter Street">
+
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>Land Mark</mat-label>
+                          <input matInput type="text" formControlName="landMark" name="landMark"
+                            placeholder="Enter Landmark">
+
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>District</mat-label>
+                          <input matInput type="text" formControlName="dist" name="district"
+                            placeholder="Enter District">
+
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>State</mat-label>
+                          <input matInput type="text" formControlName="state" name="state" placeholder="Enter State">
+
+                        </mat-form-field>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>Country</mat-label>
+                          <input matInput type="text" formControlName="country" name="country"
+                            placeholder="Enter Country">
+
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>PIN</mat-label>
+                          <input matInput type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)'
+                            formControlName="pincode" name="pincode" placeholder="Enter Pin code">
+
+                        </mat-form-field>
+                      </td>
+                    </tr>
+                    <!-- https://api.postalpincode.in/pincode/400005  -->
+
+                  </table>
+                </div>
+                <div>
+                  <button mat-raised-button matStepperPrevious color="primary">Back</button>
+                  <button mat-raised-button matStepperNext color="primary" style="margin:5px;" (click)="moveDone()">Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Done</ng-template>
+              <!-- npm install --save pdfmake -->
+              <mat-card class="invoice-Card">
+                <div style="display: flex;">
+                  <div style="flex-grow: 1;">
+
+                    <table id="mytable" class="table table-bordred table-striped">
+
+                      <thead>
+                        <th>Item</th>
+                        <th>Qunatity</th>
+                        <th>Rate</th>
+                        <th>Sum Of rate</th>
+                        <th>Customer Rate/ Item</th>
+                        <th>Making Charge/ Item</th>
+                        <th>Discount if any/ Item</th>
+                      </thead>
+                      <tbody *ngFor="let item of items">
+
+                        <tr>
+                          <td>{{item.itemName}}</td>
+                          <td>{{item.piece}}</td>
+                          <td>{{item.rate}}</td>
+                          <td>{{item.sumOfRate}}</td>
+                          <td><input type="text" (keypress)="validate($event)"
+                              (keyup)="setCustomerRate($event, item)" size="5"/></td>
+                          <td><input type="text" (keypress)="validate($event)"
+                              (keyup)="setMakingCharge($event, item)" size="5"/></td>
+                          <td><input type="text" (keypress)="validate($event)"
+                                (keyup)="setDiscount($event, item)" size="5"/></td>
+                        </tr>
+
+
+                      </tbody>
+
+                    </table>
+
+
+                  </div>
+                  <mat-card class="invoice-sub-Card">
+                    <div>
+                      <h2><u>Customer Details</u></h2>
+                    </div>
+                    <div>{{customerFirstName.value}}</div>
+                    <div>{{customerEmail.value}}</div>
+                    <div>{{customerMobNumber.value}}</div><br>
+                    <div>
+                      <h2><u>Billing Details</u></h2>
+                    </div>
+                    <table id="subTable" border="1">
+                      
+                        <th>Item</th>
+                        <th>Qunatity</th>
+                        <th>C Rate</th>
+                        <th>M Charge</th>
+                        <th>C Sum Of Rate</th>
+                        <th>dis</th>
+                      <tbody *ngFor="let item of items">
+                        <tr>
+                          <td>{{item.itemName}}</td>
+                          <td>{{item.piece}}</td>
+                          <td>{{item.customerRate || ""}}</td>
+                          <td>{{item.makingCharge || ""}}</td>
+                          <td>{{(item.piece*item.customerRate)+(item.piece*item.makingCharge) | number:'1.0-2' || ""}}</td>
+                          <td>{{(item.piece*item.discountIfAny) | number:'1.0-2' || ""}}</td>
+                        </tr>
+                      </tbody>
+                       <tr><td colspan="5">Total Amount</td><td>{{totalAmount || ""}}</td></tr>
+                       <tr><td colspan="5">Paid Amount</td><td><input type="text" [value]="paidAmount" (keypress)="validate($event)"
+                        (keyup)="setPaidAmount($event, item)" size="5"/></td></tr>
+                       <tr><td colspan="5">Due Amount</td><td>{{dueAmount || ""}}</td></tr>
+                    </table>
+                  </mat-card>
+                </div>
+              </mat-card>
+              <div>
+                <button mat-raised-button matStepperPrevious color="primary">Back</button>
+                <button mat-raised-button (click)="saveCustomer()" color="primary" style="margin:5px;">Print
+                  Invoice</button>
+              </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+
+        </form>
+      </mat-card>
+    </div>
+
+  </ng-template>
+</body>
+
+</html>

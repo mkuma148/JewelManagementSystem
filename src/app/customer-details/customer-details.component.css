@@ -1,0 +1,14 @@
+#bannerbox {
+    border: 2px solid;
+    border-radius: 10px;
+    background-color: dbdbdb;
+    width: 30%;
+    height: 150px;
+    margin: 5px;
+    float:left;
+}
+@font-face {
+    font-family: arjunFont;
+    /* src: url(../GnuMICR.ttf.Base64.encoded.ts); */
+    src: url(/../assets/ARJUN.TTF);
+  }

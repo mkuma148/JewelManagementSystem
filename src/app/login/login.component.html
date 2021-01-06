@@ -1,0 +1,32 @@
+<div class="main-div">
+    <mat-card fcFlex="25">
+      <mat-toolbar color="primary">Login Page</mat-toolbar>
+     <form fxLayoutAlign="Stretch" fxLayout="column" class="login-form">
+       <div>{{msg}}</div>
+       <mat-form-field>
+         <mat-label>User name</mat-label>
+         <input matInput type="text" [(ngModel)]="loginUserData.email" #uname="ngModel" name="email" required placeholder="Enter User">
+         <mat-error *ngIf="uname.hasError('required')">User name is required</mat-error>
+       </mat-form-field>
+     
+       <mat-form-field>
+         <mat-label>Password</mat-label>
+         <input matInput  type="password" [type]="hide ? 'password' : 'text'" [(ngModel)]="loginUserData.password" name="password" #pass="ngModel" required placeholder="Enter Password">
+         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+         <mat-error *ngIf="pass.hasError('required')">Password is required</mat-error>
+       </mat-form-field>
+       
+       <div>
+       <button mat-raised-button style="margin:5px;" color="warn" (click)="login()" class="login-button" type="submit">Login</button>
+       <button mat-raised-button style="margin:5px;" color="warn" (click)="register()" class="login-button" type="submit">Register</button>
+    </div>
+    <div>
+      <a [routerLink]="['password']">Forgot Your Password?</a>
+   </div>
+     </form>
+     <!-- <iframe src="https://www.goldpriceindia.com/wmshare-wlifop-001.php" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe> -->
+    </mat-card>
+    <!-- <iframe src="https://www.goldpriceindia.com/wmshare-wlifop-002.php" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
+    <iframe src="https://www.goldpriceindia.com/wmshare-wlifop-002.php?lang=hi" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
+    <iframe src="https://www.goldpriceindia.com/wmshare-wlifop-001.php?lang=hi" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe> -->
+ </div>

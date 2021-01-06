@@ -1,0 +1,166 @@
+<div *ngIf="data.customer.language === 'Eng'; else Hindi">
+<h1 align="center" mat-dialog-title color="warn">Customer Invoice</h1>
+<mat-dialog-content class="mat-typography">
+<mat-card class="invoice-sub-Card">
+  <div>
+    <h4><u>Customer Details</u></h4>
+  </div>
+  <div>{{data.customer.customerFirstName}}</div>
+  <div>{{data.customer.email}}</div>
+  <div>+91{{data.customer.mobNumber}}</div><br>
+  <div style="display:flex; flex-direction: row;">
+    <h4><u>Billing Details</u></h4>
+    <div style="display: flex; justify-content: flex-end;padding-left:160px">
+      <mat-checkbox name="checkboxRate" [(ngModel)]="showRate">Exclude Rate</mat-checkbox>
+    </div>
+  </div>
+  <!-- <input type="text" style="font-family: arjunFont;font-size: 18px;font-weight: bold; height: 30px;;" [(ngModel)]="test"> -->
+  <!-- </textarea> -->
+  <table id="subTable" border="1">
+    <th>Item</th>
+    <th>Hallmark</th>
+    <th>Unit</th>
+    <th>Q/W</th>
+    <th>Rate</th>
+    <th>M Charge</th>
+    <th>Sum Of Rate</th>
+    <tbody *ngFor="let item of data.customer.invoice.itemSold">
+      <tr>
+        <td>{{item.itemName}}</td>
+        <td>{{item.hallMark}}</td>
+        <td>{{item.unit}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.soldRate | currency:'INR' || ""}}</td>
+        <td>{{item.makingChargeIfAny | currency:'INR' || ""}}</td>
+        <td align="right">
+          {{(item.quantity*item.soldRate)+(item.quantity*item.makingChargeIfAny) | currency:'INR' || ""}}</td>
+      </tr>
+    </tbody>
+    <tr>
+      <td colspan="6">Total Amount</td>
+      <td align="right">{{data.customer.invoice.totalAmount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><a href="javascript:void(0)" (click)="viewAssetEx()">Asset Exchange</a></td>
+      <td align="right">{{data.customer.invoice.totalAssetAmount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6">Amount after asset deduction</td>
+      <td align="right">{{data.customer.invoice.totalAmount - data.customer.invoice.totalAssetAmount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6">Discount</td>
+      <td align="right">{{data.customer.invoice.totalDiscount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6">Amount Payable</td>
+      <td align="right">{{data.customer.invoice.totalAmount - data.customer.invoice.totalAssetAmount - data.customer.invoice.totalDiscount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><a href="javascript:void(0)" (click)="viewPaidAmount()">Paid Amount</a></td>
+      <td align="right">{{data.customer.invoice.amountPaid | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6">Due Amount</td>
+      <td align="right">{{data.customer.invoice.amountDue || 0 | currency:'INR'}}</td>
+    </tr>
+    <tr *ngIf="data.customer.invoice.amountDue > 0">
+      <td colspan="6">Pay Amount</td>
+      <td><input type="text" style="text-align: right;" [value]="paidAmount" (keypress)="validate($event)"
+          (keyup)="setPaidAmount($event)" size="10" /></td>
+    </tr>
+    <tr>
+      <td colspan="7"><textarea matInput type="text" [(ngModel)]="data.customer.invoice.additionalComments" size="45" placeholder="Addition Comments"></textarea></td>
+    </tr>
+  </table>
+</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="warn" (click)="payRemainingAmount()">Get Invoice</button>
+</mat-dialog-actions>
+</div>
+
+
+<ng-template #Hindi>
+<h1 align="center" mat-dialog-title color="warn">ग्राहक का बिल</h1>
+<mat-dialog-content class="mat-typography">
+<mat-card class="invoice-sub-Card">
+  <div>
+    <h4><u>ग्राहक विवरण</u></h4>
+  </div>
+  <div style="font-family: arjunFont;font-size: 18px;font-weight: bold;">{{data.customer.customerFirstName}}</div>
+  <div>{{data.customer.email}}</div>
+  <div>+91{{data.customer.mobNumber}}</div><br>
+  <div style="display:flex; flex-direction: row;">
+    <h4><u>बिलिंग विवरण</u></h4>
+    <div style="display: flex; justify-content: flex-end;padding-left:160px">
+      <mat-checkbox name="checkboxRate" [(ngModel)]="showRate">मूल्य स्तंभ निकालें</mat-checkbox>
+    </div>
+  </div>
+  <!-- <input type="text" style="font-family: arjunFont;font-size: 18px;font-weight: bold; height: 30px;;" [(ngModel)]="test"> -->
+  <!-- </textarea> -->
+  <table id="subTable" border="1">
+    <th>वस्तु</th>
+    <th>बानगी</th>
+    <th>मात्रक</th>
+    <th>मात्रा/वजन</th>
+    <th>मूल्य</th>
+    <th>निर्मित लागत</th>
+    <th style="text-align: right;">रकम</th>
+    <tbody *ngFor="let item of data.customer.invoice.itemSold">
+      <tr>
+        <td style="font-family: arjunFont;font-size: 18px;">{{item.itemName}}</td>
+        <td>{{item.hallMark}}</td>
+        <td>{{item.unit}}</td>
+        <td align="right">{{item.quantity}}</td>
+        <td align="right">{{item.soldRate | currency:'INR' || ""}}</td>
+        <td align="right">{{item.makingChargeIfAny | currency:'INR' || ""}}</td>
+        <td align="right">
+          {{(item.quantity*item.soldRate)+(item.quantity*item.makingChargeIfAny) | currency:'INR' || ""}}</td>
+      </tr>
+    </tbody>
+    <tr>
+      <td colspan="6"><b>कुल रकम</b></td>
+      <td align="right">{{data.customer.invoice.totalAmount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><a href="javascript:void(0)" (click)="viewAssetEx()"><b>आभूषण विनिमय</b></a></td>
+      <td align="right">{{data.customer.invoice.totalAssetAmount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><b>गहने कटौती के बाद राशि</b></td>
+      <td align="right">{{data.customer.invoice.totalAmount - data.customer.invoice.totalAssetAmount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><b>छूट</b></td>
+      <td align="right">{{data.customer.invoice.totalDiscount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><b>देय राशि</b></td>
+      <td align="right">{{data.customer.invoice.totalAmount - data.customer.invoice.totalAssetAmount - data.customer.invoice.totalDiscount | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><a href="javascript:void(0)" (click)="viewPaidAmount()"><b>भुगतान की गई राशि</b></a></td>
+      <td align="right">{{data.customer.invoice.amountPaid | currency:'INR' || ""}}</td>
+    </tr>
+    <tr>
+      <td colspan="6"><b>बकाया राशि</b></td>
+      <td align="right">{{data.customer.invoice.amountDue || 0 | currency:'INR'}}</td>
+    </tr>
+    <tr *ngIf="data.customer.invoice.amountDue > 0">
+      <td colspan="6"><b>राशि भुगतान</b></td>
+      <td><input type="text" style="text-align: right;" [value]="paidAmount" (keypress)="validate($event)"
+          (keyup)="setPaidAmount($event)" size="10" /></td>
+    </tr>
+    <tr>
+      <td colspan="7"><textarea style="font-family: arjunFont;font-size: 18px;font-weight: bold;" matInput type="text" [(ngModel)]="data.customer.invoice.additionalComments" size="45" placeholder="jnjn"></textarea></td>
+    </tr>
+  </table>
+</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>रद्द करें</button>
+  <button mat-raised-button color="warn" (click)="payRemainingAmount()">भुगतान करें</button>
+</mat-dialog-actions>
+</ng-template>

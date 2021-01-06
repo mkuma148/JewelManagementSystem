@@ -1,0 +1,319 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-secondary d-flex justify-content-between">
+    <a class="navbar-brand" href="#"><b>चालान जनरेटर</b></a>
+    <div>
+        <a class="text-white" href="https://github.com/ngdevelop-tech/angular-pdfmake-invoice-generator"
+            target="_blank"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
+    </div>
+    <div style="color: aqua;">
+
+        <span>
+     
+            <a href="https://google.com" style="color:hotpink;" target="window" onclick="window.open('assets/ArjunKeyboard.jpg','window','width=1000,height=600,top=100%,left=250%'); return false;">
+            <mat-icon  matTooltip="Hindi keyboard">keyboard</mat-icon> </a>
+           
+          </span>
+
+    <!-- <b>{{time | date:"HH:mm:ss"}}</b> -->
+    <button mat-icon-button><a href="javascript:void(0)" (click)="switchToEnglish()"><mat-icon style="color:greenyellow;" matTooltip="Switch To English Mode">toggle_off</mat-icon></a></button>
+    </div>
+</nav>
+<form #invoiceForm="ngForm" novalidate>
+    <div class="container-fluid pt-2 mb-5">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="card border-secondary">
+                    <div class="card-body">
+                        <h4 class="card-title">ग्राहक विवरण</h4>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="name">नाम</label>
+                                    <input type="text" class="form-control" name="name" id="name" minlength="3"
+                                        maxlength="30" required
+                                        [(ngModel)]="invoice.customerName" autocomplete="off"
+                                        [ngClass]="{'is-invalid': invoiceForm.submitted && CustName.invalid}"
+                                        #CustName="ngModel" style="font-family: arjunFont;font-size: 18px;font-weight: bold; height: 30px;">
+                                    <div id="nvdiv" *ngIf="CustName.errors && (CustName.invalid && CustName.touched)">
+                                        <mat-error id="nvsamll1" *ngIf="CustName.errors.required">नाम आवश्यक है।
+                                        </mat-error>
+                                        <mat-error id="nvsamll2" *ngIf="CustName.errors.minlength">नाम न्यूनतम 3 वर्ण का होना चाहिए।</mat-error>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">पता</label>
+                                    <textarea class="form-control" name="address" id="address" row="3"
+                                        [(ngModel)]="invoice.address"
+                                        [ngClass]="{'is-invalid': invoiceForm.submitted && Address.invalid}"
+                                        #Address="ngModel" required style="font-family: arjunFont;font-size: 18px;font-weight: bold;"></textarea>
+                                    <div id="nvdiv" *ngIf="Address.errors && (Address.invalid && Address.touched)">
+                                        <mat-error id="nvsamll1" *ngIf="Address.errors.required">
+                                            पता आवश्यक है।
+                                        </mat-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="email">
+                                        ईमेल आईडी</label>
+                                    <input type="email" class="form-control" name="email" id="email"
+                                        [(ngModel)]="invoice.email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactNo">संपर्क संख्या</label>
+                                    <input type="text" class="form-control" (keypress)="isNumber($event)" name="contactNo" id="contactNo"
+                                        [ngClass]="{'is-invalid': invoiceForm.submitted && ContactNo.invalid}"
+                                        [(ngModel)]="invoice.contactNo" #ContactNo="ngModel" style="font-family: arjunFont;font-size: 18px;font-weight: bold; height: 30px;;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-secondary mt-2">
+                    <div class="card-body">
+                        <h4 class="card-title d-flex justify-content-between">ऑर्डर का विवरण<button type="button"
+                                class="btn btn-secondary" (click)="addProduct()">+</button></h4>
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>वस्तु</th>
+                                        <th>बानगी</th>
+                                        <th>मात्रक</th>
+                                        <th>मात्रा/वजन</th>
+                                        <th>मूल्य</th>
+                                        <th>निर्मित लागत</th>
+                                        <th>छूट</th>
+                                        <th>रकम</th>
+                                        <th>हटाएं</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of invoice.items; let i=index; trackBy: customProduct">
+                                        <td scope="row">
+                                            <input type="text" class="form-control" name="itemName{{i}}" style="font-family: arjunFont;font-size: 18px;font-weight: bold;"
+                                                [ngClass]="{'is-invalid': invoiceForm.submitted && ItemName.invalid}" autocomplete="off"
+                                                id="itemName" [(ngModel)]="item.name" #ItemName="ngModel" required>
+                                                <div *ngIf="ItemName.errors && (ItemName.invalid && ItemName.touched)">
+                                                    <mat-error *ngIf="ItemName.errors.required">वस्तु नाम आवश्यक है
+                                                    </mat-error>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="legacy" class="mat-select">
+                                                <mat-label>बानगी</mat-label>
+                                                <mat-select [(ngModel)]="item.hallMark" name="hallMark{{i}}">
+                                                    <mat-option *ngFor="let bis of bisHallMark" [value]="bis.value">
+                                                        {{bis.viewValue}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="legacy" class="mat-select">
+                                                <mat-label>मात्रक</mat-label>
+                                                <mat-select [(ngModel)]="item.selectedValue" name="unit{{i}}">
+                                                    <mat-option *ngFor="let unit of units" [value]="unit.value">
+                                                        {{unit.viewValue}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="quantity{{i}}" id="quantity" 
+                                                (keypress)="validate($event)" [ngClass]="{'is-invalid': invoiceForm.submitted && Qty.invalid}"
+                                                 (keyup)="setQuantity($event, item)" #Qty="ngModel" [(ngModel)]="item.anything3"
+                                                size="5" required>
+                                                <div *ngIf="Qty.errors && (Qty.invalid && Qty.touched)">
+                                                    <mat-error *ngIf="Qty.errors.required">मात्रा / वजन की आवश्यकता होती है।
+                                                    </mat-error>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="price{{i}}" id="price" 
+                                                (keypress)="validate($event)" (keyup)="setCustomerRate($event, item)" 
+                                                [ngClass]="{'is-invalid': invoiceForm.submitted && Rate.invalid}"
+                                                #Rate="ngModel" [(ngModel)]="item.anything4"
+                                                size="5" required>
+                                                <div *ngIf="Rate.errors && (Rate.invalid && Rate.touched)">
+                                                    <mat-error *ngIf="Rate.errors.required">दर की आवश्यकता है
+                                                    </mat-error>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="making{{i}}" id="making"
+                                                (keypress)="validate($event)" (keyup)="setMakingCharge($event, item)"
+                                                size="5" required>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="discount{{i}}" id="discount"
+                                                (keypress)="validate($event)" (keyup)="setDiscount($event, item)"
+                                                size="5" required>
+                                        </td>
+                                        <td>
+                                            {{((item.qty*item.price)+(item.qty*item.making)) - item.discountIfAny || '' | number:'.0-2'}}
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);" (click)="deleteProduct(item)">
+                                                <mat-icon>cancel</mat-icon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-secondary mt-2">
+                    <div class="card-body">
+                        <h4 class="card-title d-flex justify-content-between">
+                            पुराने सोने/चांदी विनिमय <button
+                                type="button" class="btn btn-secondary" (click)="addItem()">+</button></h4>
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>वस्तु</th>
+                                        <th>बानगी</th>
+                                        <th>मात्रक</th>
+                                        <th>वजन</th>
+                                        <th>मूल्य</th>
+                                        <th>नफ़ा</th>
+                                        <th>रकम</th>
+                                        <th>हटाएं</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let oldGS of invoice.oldGS; let i=index; trackBy: customOldGS">
+                                        <td scope="row">
+                                            <input type="text" class="form-control" name="gsItemName{{i}}" style="font-family: arjunFont;font-size: 18px;font-weight: bold;"
+                                                [ngClass]="{'is-invalid': invoiceForm.submitted && GSItemName.invalid}" autocomplete="off"
+                                                id="gsItemName" [(ngModel)]="oldGS.name" #GSItemName="ngModel" required>
+                                                <div *ngIf="GSItemName.errors && (GSItemName.invalid && GSItemName.touched)">
+                                                    <mat-error *ngIf="GSItemName.errors.required">
+                                                        वस्तु नाम आवश्यक है
+                                                    </mat-error>
+                                                </div>
+                                        </td>
+                                        <td>
+
+                                            <mat-form-field appearance="legacy" class="mat-select">
+                                                <mat-label>बानगी</mat-label>
+                                                <mat-select [(ngModel)]="oldGS.hallMark" name="oldGSHallmark{{i}}">
+                                                    <mat-option *ngFor="let bis of bisHallMark" [value]="bis.value">
+                                                        {{bis.viewValue}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="legacy" class="mat-select">
+                                                <mat-label>मात्रक</mat-label>
+                                                <mat-select [(ngModel)]="oldGS.selectedValue" name="oldGSUnit{{i}}">
+                                                    <mat-option *ngFor="let unit of units" [value]="unit.value">
+                                                        {{unit.viewValue}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="weight{{i}}" id="weight"
+                                                (keypress)="validate($event)" (keyup)="setWeight($event, oldGS)"
+                                                size="5" [ngClass]="{'is-invalid': invoiceForm.submitted && Weight.invalid}"
+                                                #Weight="ngModel" [(ngModel)]="oldGS.anything1"
+                                                required>
+                                                <div *ngIf="Weight.errors && (Weight.invalid && Weight.touched)">
+                                                    <mat-error *ngIf="Weight.errors.required">वजन की आवश्यकता होती है।
+                                                    </mat-error>
+                                                </div>
+                                                
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="rate{{i}}" id="rate"
+                                                (keypress)="validate($event)" (keyup)="setRate($event, oldGS)" size="5"
+                                                [ngClass]="{'is-invalid': invoiceForm.submitted && rate.invalid}"
+                                                #rate="ngModel" [(ngModel)]='oldGS.anything2'
+                                                required>
+                                                <div *ngIf="rate.errors && (rate.invalid && rate.touched)">
+                                                    <mat-error *ngIf="rate.errors.required">दर की आवश्यकता है
+                                                    </mat-error>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="margin{{i}}" id="margin"
+                                                (keypress)="validate($event)" (keyup)="setMargin($event, oldGS)"
+                                                size="5" required>
+                                        </td>
+                                        <td>
+                                            {{(oldGS.weight*oldGS.rate) - oldGS.margin || '' | number:'.0-2'}}
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);" (click)="deleteItem(oldGS)">
+                                                <mat-icon>cancel</mat-icon>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-secondary mt-2">
+                    <div class="card-body">
+                        <h4 class="card-title">अतिरिक्त विवरण</h4>
+                        <div class="form-group">
+                            <textarea class="form-control" name="additionalDetails" rows="3" style="font-family: arjunFont;font-size: 18px;font-weight: bold;"
+                                [(ngModel)]="invoice.additionalDetails"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-2">
+
+
+                <div class="main-div-banner">
+                    <mat-card fcFlex="25" class="main-mat-card-banner">
+                        <mat-card-header>
+                            <mat-card-subtitle style="padding-left: 20px;">पूरी राशि</mat-card-subtitle>
+                            <mat-card-title>{{totalAmount | number:'.0-2'}}</mat-card-title>
+                        </mat-card-header>
+                    </mat-card>
+                </div>
+
+                <br>
+                <div>
+                    <table border="1">
+                        <tr>
+                            <th>पूरी राशि</th>
+                            <td>{{totalAmount | number:'.0-2'}}</td>
+                        </tr>
+                        <tr>
+                            <th>भुगतान राशि</th>
+                            <td><input type="text" class="form-control" name="paidAmount" id="paidAmount"
+                                    (keypress)="validate($event)" (keyup)="setPaidAmount($event)" size="5" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>बकाया राशि</th>
+                            <td>{{dueAmount | number:'.0-2'}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <div class="showRate">
+                    <mat-checkbox name="checkbox" [(ngModel)]="showRate">मूल्य स्तंभ निकालें</mat-checkbox>
+                </div>
+                <div class="invoice">
+                    
+                    <button mat-fab color="warn" (click)="invoiceForm.valid ? saveCustomer() : ''">
+                        <mat-icon matTooltip="Save & Receipt">receipt</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

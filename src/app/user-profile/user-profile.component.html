@@ -1,0 +1,69 @@
+<div class="main-div">
+    <mat-card fcFlex="25">
+      <mat-toolbar color="primary">Hello {{user.userFirstName}}</mat-toolbar>
+       <form fxLayoutAlign="Stretch" fxLayout="column" class="login-form">
+
+        <!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="card">
+  <div *ngIf="user.imagePath === ''; else profilePic" class="profile-userpic">
+    <img src="https://firebasestorage.googleapis.com/v0/b/camp-9ee59.appspot.com/o/RoomsImages%2F1599720396523?alt=media&token=fb67ed10-ddbd-4c12-b75f-f8c1e67304a0" class="img-responsive" alt="">
+  </div>
+  <ng-template #profilePic>
+  <div class="profile-userpic">
+    <img [src]="user.imagePath" class="img-responsive" alt="">
+  </div>
+</ng-template>
+  
+  <h1>{{user.userFirstName}} {{user.userLastName}}</h1>
+  <p class="title">{{user.storeName}}</p>
+  <p>{{user.businessName}}</p>
+  <div style="margin: 24px 0;">
+    <a href="#"><i class="fa fa-dribbble"></i></a> 
+    <a href="#"><i class="fa fa-twitter"></i></a>  
+    <a href="#"><i class="fa fa-linkedin"></i></a>  
+    <a href="https://facebook.com/"><i class="fa fa-facebook"></i></a> 
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel hideToggle (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            <p><button>Contact</button></p>
+        </mat-panel-title>
+        
+      </mat-expansion-panel-header>
+      <p>{{user.email}}</p>
+      <p>+91{{user.mobNumber}}</p>
+    </mat-expansion-panel>
+   
+                         </mat-accordion>
+</div>
+
+</body>
+</html>
+
+     </form>
+     
+    </mat-card>
+ </div>
+  <!-- <mat-card>
+    <mat-card-header><mat-card-subtitle>Email</mat-card-subtitle>
+        <mat-card-title>
+            {{user.email}}
+    </mat-card-title>
+</mat-card-header>
+  </mat-card>
+  <mat-divider></mat-divider> -->
+<!-- <mat-card>
+    <mat-card-header><mat-card-subtitle>Mobile Number</mat-card-subtitle>
+        <mat-card-title>
+            {{user.mobNumber}}
+    </mat-card-title>
+</mat-card-header>
+</mat-card> -->
+

@@ -1,0 +1,74 @@
+
+<div class="main-div">
+  
+    <mat-card fcFlex="25">
+      <mat-toolbar color="primary">Edit User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        <mat-spinner *ngIf="showSpinner" color="warn" [diameter]="30"></mat-spinner></mat-toolbar>
+     <form fxLayoutAlign="Stretch" fxLayout="column" class="login-form" #employeeForm="ngForm" autocomplete="on" novalidate>
+       <mat-form-field>
+         <mat-label>First Name</mat-label>
+         <input matInput type="text" [(ngModel)]="user.userFirstName" minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  #name="ngModel" required name="userFirstName" placeholder="Enter First Name">
+         <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+         <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+         <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error>
+       </mat-form-field>
+
+       <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" [(ngModel)]="user.userLastName" required minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  #lname="ngModel" name="userLastName" placeholder="Enter Last Name">
+        <mat-error *ngIf="lname.hasError('required')">Last Name is required</mat-error>
+         <mat-error *ngIf="lname.hasError('minlength')">Last Name must be minimum of 3 characters.</mat-error>
+         <mat-error *ngIf="lname.hasError('pattern')">Last Name must be only alphabets.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Profession</mat-label>
+        <input matInput type="text" [(ngModel)]="user.storeName" required name="storeName" minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  #prof="ngModel" placeholder="Enter your profession">
+        <mat-error *ngIf="prof.hasError('required')">Profession is required</mat-error>
+         <mat-error *ngIf="prof.hasError('minlength')">Profession must be minimum of 3 characters.</mat-error>
+         <mat-error *ngIf="prof.hasError('pattern')">Profession must be only alphabets.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Company</mat-label>
+        <input matInput type="text" [(ngModel)]="user.businessName" required name="businessName" minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  #comp="ngModel" placeholder="Enter your company">
+        <mat-error *ngIf="comp.hasError('required')">Company is required</mat-error>
+         <mat-error *ngIf="comp.hasError('minlength')">Company must be minimum of 3 characters.</mat-error>
+         <mat-error *ngIf="comp.hasError('pattern')">Company must be only alphabets.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Mobile Number</mat-label>
+        <input matInput type="tel" [(ngModel)]="user.mobNumber" #mobile="ngModel" required pattern="^\d{10}$" name="mobNumber" required pattern="^\d{10}$" placeholder="Enter Mobile Number">
+        <mat-error *ngIf="mobile.hasError('required')">Mobile number is required</mat-error>
+         <!-- <mat-error *ngIf="comp.hasError('minlength')">Company must be minimum of 3 characters.</mat-error> -->
+         <mat-error *ngIf="mobile.hasError('pattern')">Mobile number must be 10 digit and should be of number type.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="user.email" required #email="ngModel" email name="email" placeholder="Enter Email">
+        <mat-error *ngIf="email.hasError('required')">Email is required</mat-error>
+         <!-- <mat-error *ngIf="comp.hasError('minlength')">Company must be minimum of 3 characters.</mat-error> -->
+         <mat-error *ngIf="email.hasError('email')">Email must be in the format abc@xyz.</mat-error>
+      </mat-form-field>
+      <div class="form-group col-12" align="left">
+        <input class="ng-hide" type="file"
+          id="file"
+         (change)="onFileSelected($event)"
+        name="image"
+        autocomplete="off"
+        />
+       </div>
+       <div>
+       <button mat-raised-button style="margin:5px;" [disabled]="employeeForm.form.invalid" color="warn" (click)="submit()" class="login-button" type="submit">Submit</button>
+    </div>
+     </form>
+     
+    </mat-card>
+ </div>
+ 

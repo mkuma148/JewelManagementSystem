@@ -1,0 +1,127 @@
+mat-sidenav-container{
+    height: 100%;
+}
+
+mat-sidenav, mat-sidenav-content{
+    padding: 2px;
+}
+
+mat-sidenav{
+    background-color: lightsteelblue;
+    width : 200px;
+}
+
+.navbar{
+    justify-content: space-between;
+}
+
+
+
+span{
+   padding-right: 1rem;
+}
+
+.center{
+    margin: 10rem;
+}
+
+a:hover {color: red;}   /* mouse over link (blue when mouse over)*/
+
+a.selected {
+    color: red;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+  }
+
+  .profile-userpic img {
+    float: none;
+    margin: 0 auto;
+    width: 80px;
+    height: 60px;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+  }
+
+  .footer {
+    position: fixed;
+    padding-left: 1.5%;
+    left: 0;
+    bottom: 0;
+    width: 10%;
+    text-align: left;
+  }
+
+  .serif {
+    font-family: "Times New Roman", Times, serif;
+  }
+
+  .txt-low{
+    color:red;
+  }
+
+  .txt-high{
+    color:green;
+  }
+
+  .blinking {
+    color:#fff;
+    -webkit-animation: flash linear 1.7s infinite;
+    animation: flash linear 1.7s infinite;
+    color: gold;
+    opacity: 1;
+  }
+  
+  @-webkit-keyframes flash {
+    0% { opacity: 0; } 
+    80% { opacity: 1; color:gold; } 
+    83% { opacity: 0; color:gold; } 
+    86% { opacity: 1; color:gold;}  
+    89% { opacity: 0} 
+    92% { opacity: 1; color:goldenrod;} 
+    95% { opacity: 0; color:goldenrod;}
+    100% { opacity: 1; color:goldenrod;}
+  }
+  @keyframes flash {
+    0% { opacity: 0; } 
+    80% { opacity: 1; color:gold; } 
+    83% { opacity: 0; color:gold; } 
+    86% { opacity: 1; color:gold;}  
+    89% { opacity: 0} 
+    92% { opacity: 1; color:goldenrod;} 
+    95% { opacity: 0; color:goldenrod;}
+    100% { opacity: 1; color:goldenrod;}
+  }
+
+  /* .blinking {
+    animation-name:animate;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    opacity: 1;
+    color: gold;
+  }
+  
+  @keyframes animate {
+    0% {
+      opacity: 1;
+    }
+  
+    50% {
+      opacity: 0.5
+    }
+  
+    100% {
+      opacity: 0;
+    }
+  } */
+
+  .rate {
+    font-family: "Times New Roman", Times, serif;
+    font-size: small;
+  }

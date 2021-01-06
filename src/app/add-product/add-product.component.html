@@ -1,0 +1,305 @@
+<div class="main-div">
+  <mat-card fcFlex="25" class="main-mat-card">
+    <mat-toolbar color="warn">Add Product</mat-toolbar>
+    <form fxLayoutAlign="Stretch" fxLayout="column" class="login-form" #productFields="ngForm" autocomplete="off"
+      novalidate>
+      <mat-card class="sub-Card">
+        <div style="display: flex;">
+          <div style="flex-grow: 1;">
+            <mat-card-header>
+              <!-- <div mat-card-avatar class="example-header-image"></div> -->
+              <mat-card-title style="margin-left:-15px;">Add Product</mat-card-title>
+              <!-- <mat-card-subtitle style="margin-left:-15px;">Add Product</mat-card-subtitle> -->
+            </mat-card-header>
+
+            <table>
+              <tr>
+
+                <td>
+                  <mat-form-field>
+                    <mat-label>Product Name</mat-label>
+                    <input matInput type="text" [(ngModel)]="product.productName" #productName="ngModel" minlength="3"
+                      maxlength="30" pattern="^[a-zA-Z ]*$" required name="productName"
+                      placeholder="Enter Product Name">
+                    <mat-error *ngIf="productName.hasError('required')">Product Name is required</mat-error>
+                    <mat-error *ngIf="productName.hasError('minlength')">Product Name must be minimum of 3 characters.
+                    </mat-error>
+                    <mat-error *ngIf="productName.hasError('pattern')">Product Name must be only alphabets.</mat-error>
+                  </mat-form-field>
+                </td>
+                <!-- <td>
+   <mat-form-field>
+       <mat-label>Customer Last Name</mat-label>
+       <input matInput type="text"  minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="userFirstName" placeholder="Enter First Name">
+       <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+       <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+       <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error> 
+      </mat-form-field>
+   </td> -->
+                <td>
+                  <mat-form-field>
+                    <mat-label>Desciption</mat-label>
+                    <input matInput type="text" [(ngModel)]="product.description" #description="ngModel" minlength="3"
+                      maxlength="30" pattern="^[a-zA-Z ]*$" required name="description" placeholder="Enter Desciption">
+                    <mat-error *ngIf="description.hasError('required')">Desciption is required</mat-error>
+                    <mat-error *ngIf="description.hasError('minlength')">Desciption must be minimum of 3 characters.
+                    </mat-error>
+                    <mat-error *ngIf="description.hasError('pattern')">Desciption must only be alphabets.</mat-error>
+                  </mat-form-field>
+                </td>
+                <!-- <td>
+           <mat-form-field>
+               <mat-label>Quantity</mat-label>
+               <input matInput type="text" [(ngModel)]="product.quantity" disable="true"  minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="quantity" placeholder="Enter First Name">
+               <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+               <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+               <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error> 
+              </mat-form-field>
+           </td> -->
+                <td>
+                  <div *ngIf="addClicked; else clicked" class="addButton">
+                    <button mat-raised-button color="warn" (click)="addProduct()"
+                      [disabled]="productFields.form.invalid">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                    <!-- <a href="javascript:void(0)" >  </a> -->
+                  </div>
+                  <ng-template #clicked>
+                    <mat-spinner *ngIf="showSpinner" color="warn" [diameter]="30"></mat-spinner>
+                  </ng-template>
+                </td>
+                <!--<td>
+             <mat-form-field>
+                <mat-label>Total Rate</mat-label>
+                <input matInput type="text"  minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="userFirstName" placeholder="Enter First Name">
+                <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+                <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error>
+               </mat-form-field>
+            </td>
+            <td>
+                <mat-form-field>
+                    <mat-label>Available?</mat-label>
+                    <input matInput type="text"  minlength="3" maxlength="30" pattern="^[a-zA-Z ]*$"  required name="userFirstName" placeholder="Enter First Name">
+                     <mat-error *ngIf="name.hasError('required')">First Name is required</mat-error>
+                    <mat-error *ngIf="name.hasError('minlength')">First Name must be minimum of 3 characters.</mat-error>
+                    <mat-error *ngIf="name.hasError('pattern')">First Name must be only alphabets.</mat-error>
+                   </mat-form-field>
+                </td> -->
+
+
+
+              </tr>
+
+            </table>
+          </div>
+
+          <div class="main-div-banner">
+            <mat-card fcFlex="25" class="main-mat-card-banner">
+              <mat-card-header>
+                <mat-card-subtitle>Product Count</mat-card-subtitle>
+                <mat-card-title>{{products.length}}</mat-card-title>
+              </mat-card-header>
+            </mat-card>
+          </div>
+
+        </div>
+
+      </mat-card>
+    </form>
+
+
+    <mat-card class="sub-table-Card">
+
+      <a class="search" href="javascript:void(0)" (click)="showFilter()" *ngIf="!filter">
+        <mat-icon>search</mat-icon>
+      </a>
+      <a class="search" href="javascript:void(0)" (click)="hideFilter()" *ngIf="filter">
+        <mat-icon>search_off</mat-icon>
+      </a>
+      <mat-divider></mat-divider>
+
+      <!-- <mat-form-field>
+ <mat-label>Filter</mat-label>
+ <input matInput (keyup)="applyFreeFilter($event)" placeholder="Search" #input>
+</mat-form-field> -->
+
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="table_class" matSort #firstSort="matSort">
+        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+          <th mat-header-cell *matHeaderCellDef>
+            <div mat-sort-header>
+              <div *ngIf="column === 'quantity';else date">
+                Sub Product Count
+              </div>
+              <ng-template #date>
+                <ng-container *ngIf="column === 'createdOn'; else noQuantity">{{column | humanize}}<br></ng-container>
+              </ng-template>
+              <ng-template #noQuantity>
+                {{column | humanize}}<br>
+              </ng-template>
+            </div>
+            <div *ngIf="column === 'delete' || column === 'addItem'; else noDisable">
+              <div></div><br>
+            </div>
+            <ng-template #noDisable>
+              <ng-container *ngIf="column === 'createdOn'; else noDateFilter">
+                <input (keyup)="applyFilter($event)" (focus)="setupFilter(column)" *ngIf="filter"
+                  placeholder="YYYY-MM-DD" />
+                <br>
+              </ng-container>
+            </ng-template>
+            <ng-template #noDateFilter>
+              <input (keyup)="applyFilter($event)" (focus)="setupFilter(column)" *ngIf="filter" /><br>
+            </ng-template>
+          </th>
+
+
+
+          <td mat-cell *matCellDef="let element" (click)="expanded(element)">
+            <div *ngIf="column === 'delete';else nodelete">
+              <a href="javaScript:void(0)" (click)="delete(element)" *ngIf="element.spinner===true?false:true">
+                <mat-icon>delete</mat-icon>
+              </a>
+              <mat-spinner *ngIf="element.spinner===true?true:false" color="warn" [diameter]="30"></mat-spinner>
+            </div>
+            <ng-template #nodelete>
+              <ng-container *ngIf="column === 'createdOn'; else noDate">
+                {{element[column] | date:'dd-MMM-yyyy HH:mm:ss'}}<br></ng-container>
+            </ng-template>
+            <ng-template #noDate>
+              <ng-container *ngIf="column === 'addItem'; else qualityCol">
+                <a href="javaScript:void(0)" (click)="addItem(element)"
+                  [class.example-expanded-row]="expandedElement === element"
+                  (click)="expandedElement = expandedElement === element ? null : element">
+                  <mat-icon>add_item</mat-icon>
+                </a>
+                <br></ng-container>
+            </ng-template>
+            <ng-template #qualityCol>
+              <ng-container *ngIf="column === 'quantity'; else allCol">
+                <!-- {{}} -->
+                {{element[column]=element.items.length}}
+                <br></ng-container>
+
+            </ng-template>
+            <ng-template #allCol>
+              {{element[column]}}<br>
+            </ng-template>
+
+          </td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <div *ngIf="element.items.length === 0; else noDataToDisplay">
+                <div class="noData">
+                  <h4>No Item To Display</h4>
+                </div>
+              </div>
+              <ng-template #noDataToDisplay>
+                <div class="example-element-description" id="section">
+                  <!-- sub table for Item-->
+                  <mat-card class="sub-item-Card">
+                    <a class="search" href="javascript:void(0)" (click)="showItemFilter()" *ngIf="!filterItem">
+                      <mat-icon>search</mat-icon>
+                    </a>
+                    <a class="search" href="javascript:void(0)" (click)="hideItemFilter()" *ngIf="filterItem">
+                      <mat-icon>search_off</mat-icon>
+                    </a>
+                    <mat-divider></mat-divider>
+                    <table mat-table [dataSource]="itemDataSource" multiTemplateDataRows class="table_class" matSort #secondSort="matSort">
+                      <ng-container matColumnDef="{{itemColumn}}" *ngFor="let itemColumn of itemsColumnsToDisplay">
+                        <th mat-header-cell *matHeaderCellDef>
+                          <div mat-sort-header>
+                          {{itemColumn | humanize}}<br>
+                         </div>
+                          <div *ngIf="itemColumn === 'delete' || itemColumn === 'editItem'; else noDisable">
+                            <div></div><br>
+                          </div>
+                          <ng-template #noDisable>
+                            <ng-container *ngIf="itemColumn === 'addedOn'; else noDateFilter">
+                              <input (keyup)="applyFilter($event)" (focus)="setupFilter(itemColumn)" *ngIf="filterItem"
+                                placeholder="YYYY-MM-DD" />
+                              <br>
+                            </ng-container>
+
+                          </ng-template>
+                          <ng-template #noDateFilter>
+                            <input (keyup)="applyItemFilter($event)" (focus)="setupItemFilter(itemColumn)"
+                              *ngIf="filterItem" /><br>
+                          </ng-template>
+                        </th>
+                        <td mat-cell *matCellDef="let itemElement">
+                          <div *ngIf="itemColumn === 'delete';else noItemdelete">
+                            <a href="javaScript:void(0)" (click)="deleteItem(element, itemElement)"
+                              *ngIf="itemElement.spinner===true?false:true">
+                              <mat-icon color="warn">cancel</mat-icon>
+                            </a>
+                            <mat-spinner *ngIf="itemElement.spinner===true?true:false" color="warn" [diameter]="30">
+                            </mat-spinner>
+                          </div>
+                          <ng-template #noItemdelete>
+                            <ng-container *ngIf="itemColumn === 'createdOn'; else noItemDate">
+                              {{itemElement[itemColumn] | date:'dd-MMM-yyyy HH:mm:ss'}}<br></ng-container>
+                          </ng-template>
+                          <ng-template #noItemDate>
+                            <ng-container *ngIf="itemColumn === 'editItem'; else allItemCol">
+                              <a href="javaScript:void(0)" (click)="editItem(element, itemElement)">
+                                <mat-icon>edit</mat-icon>
+                              </a>
+                              <br></ng-container>
+                          </ng-template>
+                          <ng-template #allItemCol>
+                            {{itemElement[itemColumn]}}<br>
+                          </ng-template>
+                        </td>
+                      </ng-container>
+
+                      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                      <ng-container matColumnDef="expandedItemDetail">
+                        <!--<td mat-cell *matCellDef="let itemElement" [attr.colspan]="itemsColumnsToDisplay.length">
+   <div class="example-element-detail"
+        [@detailExpand]="itemElement == expandedElement ? 'expanded' : 'collapsed'">
+     
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <div class="example-element-description" id="section">
+
+    </div>
+  </div>
+</td>-->
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="itemsColumnsToDisplay"></tr>
+                      <tr mat-row *matRowDef="let itemElement; columns: itemsColumnsToDisplay;"
+                        class="example-element-row" [class.example-expanded-row]="expandedElement === itemElement">
+                      </tr>
+                      <!-- <tr mat-row *matRowDef="let row; columns: ['expandedItemDetail']" class="example-detail-row"></tr> -->
+                    </table>
+                    <mat-paginator #secondPaginator [pageSize]="5" [pageSizeOptions]="[1,2,5]"
+                      [showFirstLastButtons]="true"></mat-paginator>
+                  </mat-card>
+
+                  <!-- Sub table for Item claosed-->
+                </div>
+              </ng-template>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      </table>
+      <mat-paginator #FirstPaginator [pageSize]="5" [pageSizeOptions]="[1,2,5]" [showFirstLastButtons]="true">
+      </mat-paginator>
+      <mat-progress-bar mode="indeterminate" *ngIf="tableLoaded"></mat-progress-bar>
+    </mat-card>
+  </mat-card>
+</div>

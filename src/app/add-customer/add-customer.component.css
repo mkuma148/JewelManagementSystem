@@ -1,0 +1,257 @@
+.main-div{
+  width: 1315px;
+  min-height: 800;
+  margin: 0em auto;
+  text-align: left;
+  padding: 0px;
+}
+
+.main-mat-card{
+  width: 1315px;
+  min-height: 800;
+  margin: 0em auto;
+  text-align: left;
+  padding: 0px;
+}
+
+.sub-Card{
+  width: 1250px;
+  height: 120px;
+  margin: 0em auto;
+  text-align: left;
+  padding: 20px;
+  border: 1px solid #000
+}
+
+.sub-table-Card{
+  width: 1250px;
+  margin: 0em auto;
+  text-align: left;
+  padding: 20px;
+  border: 1px solid #000
+}
+
+.invoice-Card{
+  width: 1250px;
+  min-height: 450px;
+  margin: 0em auto;
+  text-align: left;
+  border: 1px solid #000;
+  background: whitesmoke;
+}
+
+.invoice-sub-Card{
+  width: 400px;
+  min-height: 420px;
+  margin: 0em auto;
+  text-align: left;
+  border: 1px solid #000
+}
+
+
+
+  .login-form{
+    padding: 20px;
+}
+  
+  
+  mat-form-field {
+    display: block;
+  }
+  mat-form-field {
+    margin-right: 12px;
+  }
+
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  a:hover {color: red;}   /* mouse over link (blue when mouse over)*/
+
+a.active {
+    color: red;
+}
+
+.flexExpand {
+    flex: 1 1 auto;
+}
+
+
+
+
+
+.table_class {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  /* .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 120px;
+  } */
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 5px; 
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+  
+  /* .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 80px;
+    max-height: 120px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+  } */
+
+  .profile-userpic img {
+    float: none;
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+     /* -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;  */
+  }
+
+  #section {
+    text-align: left;
+    /* width: 80%;
+    margin: 15px auto 0 auto;
+    padding: 2%;
+    border-radius: 12px; */
+    /* padding: 2%; */
+    border: 1px solid #e0e0e0;
+}
+
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+  .wrapper {
+    display: grid; 
+    place-items: center;
+    height: calc(100vh - 20px);
+  }
+  .inner {
+    color: white;
+    padding: 12px;
+  }
+
+  .main-div-banner{
+    width: 140px;
+    height: 80px;
+    margin: 0em auto;
+    text-align: center;
+    /* padding: -20px; */
+  }
+  
+  .main-mat-card-banner{
+    width: 140x;
+    height: 80px;
+    margin: 0em auto;
+    text-align: center;
+    /* padding: -20px; */
+    border: 1px solid peru;
+    color: red;
+    background-color: gold
+  }
+
+  ::ng-deep .matClass {
+    width: 1000px !important;
+    height: 1000px !important;  
+    
+}
+
+.cdk-overlay-pane.mat-menu-panel {
+  width: 1000px !important; 
+  height: 1000px !important; 
+}
+
+.notification-row{
+  width: 424px;
+}
+
+.Table
+    {
+        display: table;
+    }
+    .Title
+    {
+        display: table-caption;
+        text-align: center;
+        font-weight: bold;
+        font-size: larger;
+    }
+    .Heading
+    {
+        display: table-row;
+        font-weight: bold;
+        text-align: center;
+    }
+    .Row
+    {
+        display: table-row;
+    }
+    .Cell
+    {
+        display: table-cell;
+        border: solid;
+        border-width: thin;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: center;
+    }
+
+    .mat-step-custom-click {
+      top: 0;
+      left: 0;
+      width: 130px;
+      height: 72px; 
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }

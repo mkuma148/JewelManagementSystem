@@ -1,0 +1,19 @@
+.main-div mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+    padding: 0px;
+  }
+  
+  
+  mat-form-field {
+    display: block;
+  }
+
+  .login-form{
+      padding: 20px;
+  }
+
+  .login-button{
+      width: 359px;
+  }

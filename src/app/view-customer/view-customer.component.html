@@ -1,0 +1,108 @@
+<div class="main-div">
+  <mat-card fcFlex="25" class="main-mat-card">
+    <mat-toolbar color="warn">
+      <mat-toolbar-row>View Customer
+        <span class="flexExpand"></span>
+        <div align="right" *ngIf="showFilter; else hindToggle">
+          <a href="javascript:void(0);">
+            <mat-icon (click)="getEnglishCustomer()" matTooltip="Switch To English Customer">toggle_off</mat-icon>
+          </a>
+        </div>
+        <ng-template #hindToggle>
+          <a href="javascript:void(0);">
+            <mat-icon (click)="getHindiCustomer()" matTooltip="Switch To Hindi Customer">toggle_on</mat-icon>
+          </a>
+        </ng-template>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <form fxLayoutAlign="Stretch" fxLayout="column" class="login-form">
+      <mat-card class="sub-Card">
+ <div *ngIf="showFilter; else engFilter">       
+<mat-form-field>
+    <mat-label>फिल्टर</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="[kkst" #input style="font-family: arjunFont;font-size: 18px;font-weight: bold;">
+</mat-form-field>
+</div>
+  <ng-template #engFilter>
+  <mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Free Search" #input>
+  </mat-form-field>
+</ng-template>
+  <table mat-table
+       [dataSource]="dataSource" multiTemplateDataRows
+       class="table_class" matSort #firstSort="matSort">
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column | humanize}} </th>
+    <td mat-cell *matCellDef="let element"> 
+      <div *ngIf="column === 'delete'">
+        <a href="javaScript:void(0)" (click)="delete(element)" *ngIf="element.spinner===true?false:true">
+          <mat-icon>delete</mat-icon>
+        </a>
+        <mat-spinner *ngIf="element.spinner===true?true:false" color="warn" [diameter]="30"></mat-spinner>
+      </div>
+      <div *ngIf="column === 'customerAddedOn'; else noDate">
+        {{element[column] | date:'dd-MMM-yyyy HH:mm:ss'}} 
+      </div>
+      <ng-template #noDate >
+        <div *ngIf="element['language']=='Hin'; else noHin" >
+          <div *ngIf="column === 'email'; else noEmail">
+            <div> {{element[column]}} </div>
+          </div>
+          <ng-template #noEmail>
+          <div style="font-family: arjunFont;font-size: 18px;font-weight: bold;"> {{element[column]}} </div>
+        </ng-template>
+        </div>
+      <ng-template #noHin>
+        <div> {{element[column]}} </div>
+      </ng-template>
+      </ng-template>
+    </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+      <div class="example-element-detail"
+           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="example-element-diagram">
+            <!-- <div class="card"> -->
+                <a href="javascript:void(0)" (click)="customerInfo(element)">  <div *ngIf="element.invoice.amountDue > 0; else profilePic" class="profile-userpic">
+                 <img src="\assets\pending.jpeg" class="img-responsive" alt="">
+                </div></a>
+                <ng-template #profilePic>
+                <div class="profile-userpic">
+                  <img src="\assets\paid1.jpg" class="img-responsive" alt="">
+                </div>
+              </ng-template>
+            <!-- </div> -->
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="example-element-description">
+          <table border=1>
+          <tr><td>Total Amount </td><td align="right">{{element.invoice.totalAmount}} </td></tr> 
+          <tr><td>Discount </td><td align="right">{{element.invoice.totalDiscount}} </td></tr>
+          <tr><td>Amount Payable</td><td align="right">{{element.invoice.totalAmount-element.invoice.totalDiscount}} </td></tr>
+          <tr><td>Amount Paid</td><td align="right">{{element.invoice.amountPaid}} </td></tr>
+          <tr><td>Amount Due</td><td align="right">{{element.invoice.amountDue | number:'1.0-2'}} </td></tr>
+        </table>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+<mat-paginator #FirstPaginator [pageSize]="8" [pageSizeOptions]="[8,10,20]" [showFirstLastButtons]="true">
+</mat-paginator>
+<mat-progress-bar mode="indeterminate" *ngIf="tableLoaded"></mat-progress-bar>
+      </mat-card>
+    </form>
+  </mat-card>
+</div>

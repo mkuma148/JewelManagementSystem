@@ -1,0 +1,58 @@
+<mat-toolbar color="primary" class="navbar">
+  <span>
+    <a href="javascript:void(0)" style="color: gold;"><mat-icon (click)="sidenav.toggle()" >sync_alt</mat-icon></a></span>
+     <span class="profile-userpic">
+      
+      <img src="assets/fevicon.jpeg" class="img-responsive" alt="">&nbsp; <b class="serif">OMI ज्वेलर्स</b>
+      <!-- <h6>एक अटूट विश्वास खूबसूरती का</h6> -->
+      
+     </span>
+     
+    <span>
+      <div>
+       <!-- <mat-toolbar-row>{{goldPrice}}<span class="txt-low">▼</span></mat-toolbar-row> -->
+     <a href="https://google.com" style="color: gold;" target="window" onclick="window.open('https:/'+'/'+'www.goldpriceindia.com/gold-price-patna.php','window','width=1000,height=600,top=100%,left=250%'); return false;">
+      <span> <mat-icon  matTooltip="Gold Price">trending_up</mat-icon></span></a><a href="javascript:void(0)" style="color: red;" (click)="logout()"><span><mat-icon  matTooltip="Logout">login</mat-icon></span></a>
+      <!-- <small>Hi</small> --></div>
+
+      <div *ngIf="hl==='low'; else high" class="blinking">
+        <small>{{goldPrice}}<span class="txt-low">▼</span></small>
+     </div>
+      <ng-template #high>
+        <div *ngIf="hl==='high'; else neutral" class="blinking">
+          <small>{{goldPrice}}<span class="txt-high">▲</span></small></div>
+      <ng-template #neutral>
+        <div class="blinking" *ngIf="hl==='neutral'; else noInternet">
+          <small>{{goldPrice}}</small></div>
+      </ng-template>
+      <ng-template #noInternet>
+        <div class="rate">
+          No Internet! <mat-icon [inline]="true">wifi_off</mat-icon>
+        </div>
+      </ng-template>
+    </ng-template>
+    </span>
+  </mat-toolbar>
+  
+  <mat-sidenav-container>
+   <mat-sidenav #sidenav mode="side" (opened)="log('Opened')" (closed)="log('closed')" [(opened)]="opened">
+    <a [routerLink]="['userProfile']" style="text-decoration:none;" routerLinkActive="selected"> <mat-toolbar-row><mat-icon>account_box</mat-icon>Your profile</mat-toolbar-row></a>
+    <a [routerLink]="['editProfile']" style="text-decoration:none;" routerLinkActive="selected"> <mat-toolbar-row><mat-icon>create</mat-icon>Edit profile</mat-toolbar-row></a>
+    <a [routerLink]="['sellProduct']" style="text-decoration:none;" routerLinkActive="selected">   <mat-toolbar-row><mat-icon>shop</mat-icon>Sell product</mat-toolbar-row></a>
+    <a [routerLink]="['addProduct']" style="text-decoration:none;" routerLinkActive="selected"><mat-toolbar-row><mat-icon>add_task</mat-icon>Add product</mat-toolbar-row></a>
+    <a *ngIf="EnglishTab" [routerLink]="['viewProduct']" style="text-decoration:none;" routerLinkActive="selected"> <mat-toolbar-row><mat-icon>view_list</mat-icon>Customer bill</mat-toolbar-row></a>
+    <a *ngIf="HindiTab" [routerLink]="['invoiceHindi']" style="text-decoration:none;" routerLinkActive="selected"> <mat-toolbar-row><mat-icon>view_list</mat-icon>Customer bill</mat-toolbar-row></a>
+    <a [routerLink]="['productChart']" style="text-decoration:none;" routerLinkActive="selected">   <mat-toolbar-row><mat-icon>bar_chart</mat-icon>View chart</mat-toolbar-row></a>
+    <a [routerLink]="['viewCustomer']" style="text-decoration:none;" routerLinkActive="selected">   <mat-toolbar-row><mat-icon>face</mat-icon>View customer</mat-toolbar-row></a>
+     <footer class="footer" >
+      <div>
+          <h6>Made with 💗 by <b>Mukesh Soni</b>
+          </h6>
+      </div>
+    </footer> 
+  
+  </mat-sidenav>
+   <mat-sidenav-content>
+     <router-outlet (activate)="onActivate($event)"></router-outlet>
+   </mat-sidenav-content>
+  </mat-sidenav-container> 

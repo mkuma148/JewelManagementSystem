@@ -1,0 +1,37 @@
+.main-div-banner{
+    width: 160px;
+    height: 80px;
+    margin: 0em auto;
+    text-align: center;
+    /* padding: -20px; */
+  }
+  
+  .main-mat-card-banner{
+    width: 160x;
+    height: 80px;
+    margin: 0em auto;
+    text-align: center;
+    /* padding-right: 20px; */
+    border: 1px solid peru;
+    color: red;
+    background-color: gold
+  }
+
+.mat-select{
+    width: 100px !important;
+}
+
+.invoice{
+  padding-left: 60px;
+}
+
+.showRate{
+  padding-left: 30px;
+}
+
+@font-face {
+  font-family: arjunFont;
+  /* src: url(../GnuMICR.ttf.Base64.encoded.ts); */
+  src: url(/../assets/ARJUN.TTF);
+}
+
